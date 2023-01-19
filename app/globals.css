@@ -14,3 +14,31 @@ html, body {
   width: 100%;
   height: 100vh;
 }
+
+.search{
+  position: absolute;
+  width: 100%;
+}
+
+.fa-solid {
+  width: 2.5rem;
+  justify-content: center;
+  align-items: center;
+  /* color: red; */
+}
+
+.fa-solid svg{
+  width: 100%;
+  height: 100%;
+}
+[data-reach-combobox-option][aria-selected="true"] {
+	background: none !important;
+}
+
+
+[data-reach-combobox-option]:hover {
+  background: none  !important;
+}
+[data-reach-combobox-option][aria-selected="true"]:hover {
+  background: none!important;
+}
