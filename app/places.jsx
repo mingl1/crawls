@@ -10,6 +10,8 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import location from "./assets/location.svg";
+import Image from "next/image";
 // import "@fortawesome/fontawesome-free/css/all.css";
 export default function Places({ setOrigin }) {
   const {
@@ -39,18 +41,35 @@ export default function Places({ setOrigin }) {
         value={value}
         disabled={!ready}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full p-2 rounded-t-lg bg-[#3A5A40] text-white 
+        className="w-full p-2 rounded-md bg-[#3A5A40] text-white 
     placeholder-[#DAD7CD]
     focus:outline-none"
       />
-      <ComboboxPopover className="bg-none">
-        <ComboboxList className="bg-forest rounded-b-md to-pea text-egg w-full">
+      <ComboboxPopover className="mt-2">
+        <ComboboxList className="bg-forest rounded-md to-pea text-egg w-full">
           {status === "OK" &&
             data.map(({ place_id, description }) => (
-              <div key={place_id} className="flex hover:bg-[#426446]">
-                <i class="fa-solid fa-location-dot"></i>
+              <div
+                key={place_id}
+                className="rounded-md flex hover:bg-[#426446] w-full p-1"
+              >
+                <div className="flex-1 max-w-[25px] ">
+                  <Image
+                    className=" w-full mx-auto"
+                    src={location}
+                    alt="location icon"
+                    width="2"
+                    height="5"
+                  />
+                </div>
                 {/* <FontAwesomeIcon icon="fa-solid fa-location-dot" /> */}
-                <ComboboxOption value={description} className="flex-1" />
+                {/* <div className=""> */}
+                <ComboboxOption
+                  value={description}
+                  className="flex-[5] my-auto align-middle truncate"
+                  title={description}
+                />
+                {/* </div> */}
               </div>
             ))}
         </ComboboxList>

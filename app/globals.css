@@ -42,3 +42,8 @@ html, body {
 [data-reach-combobox-option][aria-selected="true"]:hover {
   background: none!important;
 }
+
+[data-reach-combobox-popover] {
+  border: none !important;
+  background: none !important;
+}
