@@ -12,6 +12,7 @@ import {
 import "@reach/combobox/styles.css";
 import location from "./assets/location.svg";
 import Image from "next/image";
+
 // import "@fortawesome/fontawesome-free/css/all.css";
 export default function Places({ setOrigin }) {
   const {
@@ -35,7 +36,7 @@ export default function Places({ setOrigin }) {
     }
   };
   return (
-    <Combobox onSelect={handleSelect} className="w-full">
+    <Combobox onSelect={handleSelect} className="w-full drop-shadow-md">
       <ComboboxInput
         placeholder="search an addresss"
         value={value}
@@ -45,7 +46,7 @@ export default function Places({ setOrigin }) {
     placeholder-[#DAD7CD]
     focus:outline-none"
       />
-      <ComboboxPopover className="mt-2">
+      <ComboboxPopover className="drop-shadow-md">
         <ComboboxList className="bg-forest rounded-md to-pea text-egg w-full">
           {status === "OK" &&
             data.map(({ place_id, description }) => (
