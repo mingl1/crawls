@@ -2,4 +2,4 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Introduction
 
-![Image of map](https://pasteboard.co/B5im4ghj3fqU.png)
+![Image of map](https://gcdnb.pbrd.co/images/B5im4ghj3fqU.png?o=1)
