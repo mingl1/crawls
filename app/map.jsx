@@ -122,7 +122,7 @@ function MapView() {
         )}
         {origin != center && (
           <>
-            <Marker position={origin} />
+            <Marker position={origin} visible={shown} />
             {spots.map((loc) => {
               const pos = {
                 lat: loc.coordinates.latitude,

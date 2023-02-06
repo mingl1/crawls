@@ -37,13 +37,13 @@ export default function Places({ setOrigin }) {
     }
   };
   return (
-    <Combobox onSelect={handleSelect} className="w-full drop-shadow-md">
+    <Combobox onSelect={handleSelect} className="w-full drop-shadow-md ">
       <ComboboxInput
         placeholder="search an addresss"
         value={value}
         disabled={!ready}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full p-2 rounded-md bg-[#3A5A40] text-white 
+        className="w-50 sm:w-full p-2 rounded-md bg-[#3A5A40] text-white 
     placeholder-[#DAD7CD]
     focus:outline-none"
       />
