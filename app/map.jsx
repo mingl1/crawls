@@ -39,8 +39,11 @@ export default function Map() {
 }
 
 function MapView() {
-  const [origin, setOrigin] = useState(null);
+  const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
+  const [directions, setDirections] = useState(null);
+  const [opacity, setOpacity] = useState([]);
+  const places = [];
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   const fetchItems = async (center) => {
@@ -48,7 +51,7 @@ function MapView() {
       .get(
         `${"https://cors-anywhere.herokuapp.com/"}https://api.yelp.com/v3/businesses/search?latitude=${
           center.lat
-        }&longitude=${center.lng}&term=resturants&radius=500&limit=20`,
+        }&longitude=${center.lng}&term=resturants&radius=450&limit=4`,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_YELP_API_KEY}`,
@@ -59,7 +62,7 @@ function MapView() {
             // term: "resturants",
             // radius: 500,
             // limit: 20,
-            // sort_by: "relevance",
+            sort_by: "rating",
           },
         }
       )
@@ -69,6 +72,25 @@ function MapView() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const fetchDirections = async (destination) => {
+    if (!destination || destination === origin) return;
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        waypoints: places,
+        optimizeWaypoints: true,
+        travelMode: window.google.maps.TravelMode.WALKING,
+      },
+      (result, status) => {
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDirections(result);
+        }
+      }
+    );
   };
   return (
     <>
@@ -89,7 +111,15 @@ function MapView() {
         options={options}
         onLoad={onLoad}
       >
-        {origin && (
+        {directions && (
+          <DirectionsRenderer
+            directions={directions}
+            options={{
+              zIndex: 50,
+            }}
+          />
+        )}
+        {origin != center && (
           <>
             <Marker position={origin} />
             {spots.map((loc) => {
@@ -97,16 +127,32 @@ function MapView() {
                 lat: loc.coordinates.latitude,
                 lng: loc.coordinates.longitude,
               };
-              return <Marker key={loc.id} position={pos} />;
+              places.push({
+                location: {
+                  lat: loc.coordinates.latitude,
+                  lng: loc.coordinates.longitude,
+                },
+              });
+              return (
+                <Marker
+                  label={loc.name}
+                  key={loc.id}
+                  position={pos}
+                  onDblClick={() => fetchDirections(pos)}
+                  // className="opacity-50"
+                  opacity={0.7}
+                  onMouseOver={() => {
+                    // setOpacity((prev) => ({
+                    //   ...prev,
+                    //   [loc.id]: 1,
+                    // }));
+                    console.log("over");
+                  }}
+                />
+              );
             })}
           </>
         )}
-        <Circle
-          center={origin}
-          radius={500}
-          options={walkable}
-          visible={true}
-        />
       </GoogleMap>
     </>
   );
