@@ -42,7 +42,7 @@ function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
   const [directions, setDirections] = useState(null);
-  const [opacity, setOpacity] = useState([]);
+  const [shown, setShown] = useState(true);
   const places = [];
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
@@ -91,6 +91,7 @@ function MapView() {
         }
       }
     );
+    setShown(false);
   };
   return (
     <>
@@ -141,6 +142,7 @@ function MapView() {
                   onDblClick={() => fetchDirections(pos)}
                   // className="opacity-50"
                   opacity={0.7}
+                  visible={shown}
                   onMouseOver={() => {
                     // setOpacity((prev) => ({
                     //   ...prev,
