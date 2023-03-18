@@ -49,9 +49,7 @@ function MapView() {
   const fetchItems = async (center) => {
     const data = await axios
       .get(
-        `${"https://cors-anywhere.herokuapp.com/"}https://api.yelp.com/v3/businesses/search?latitude=${
-          center.lat
-        }&longitude=${center.lng}&term=resturants&radius=450&limit=4`,
+        `https://api.yelp.com/v3/businesses/search?latitude=${center.lat}&longitude=${center.lng}&term=resturants&radius=450&limit=4`,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_YELP_API_KEY}`,
