@@ -46,30 +46,22 @@ function MapView() {
   const places = [];
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
+  // const fetchItems = async (center) => {
+  //   const data = await axios
+  //     .get("./api/yelp")
+  //     .then((json) => {
+  //       setSpots(json.data.businesses);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   const fetchItems = async (center) => {
-    const data = await axios
-      .get(
-        `https://api.yelp.com/v3/businesses/search?latitude=${center.lat}&longitude=${center.lng}&term=resturants&radius=450&limit=4`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_YELP_API_KEY}`,
-          },
-          params: {
-            // latitude: center.lat,
-            // longitude: center.lng,
-            // term: "resturants",
-            // radius: 500,
-            // limit: 20,
-            sort_by: "rating",
-          },
-        }
-      )
-      .then((json) => {
-        setSpots(json.data.businesses);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const data = await fetch("/api/yelp")
+      .then((res) => res.json())
+      .then((json) => console.log(json));
+    // console.log(data.json());
+    // setSpots(data.data.businesses);
   };
 
   const fetchDirections = async (destination) => {
