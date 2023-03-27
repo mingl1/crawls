@@ -9,7 +9,6 @@ import {
 } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
-import axios from "axios";
 
 const center = {
   lat: 40.72105,

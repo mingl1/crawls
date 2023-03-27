@@ -1,4 +1,3 @@
-"use client";
 import Map from "./map";
 export default function homePage() {
   return (
