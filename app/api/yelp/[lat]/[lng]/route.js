@@ -1,8 +1,7 @@
 import axios from "axios";
 // const fetchItems = async (req, res) => {};
-const lat = 40.7323017;
-const lng = -73.9873417;
-export async function GET() {
+export async function GET(request, { params }) {
+  const { lat, lng } = params;
   const req = await axios.get(
     `https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lng}&term=resturants&radius=450&limit=4`,
     {
@@ -19,11 +18,12 @@ export async function GET() {
       },
     }
   );
-  // const response = await request.data.businesses;
   try {
-    return req;
+    const response = await req.data.businesses;
+    // console.log(params);
+    return Response.json(response);
   } catch (err) {
-    return err;
+    return new Response(err);
   }
 }
 

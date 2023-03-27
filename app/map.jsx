@@ -57,11 +57,11 @@ function MapView() {
   //     });
   // };
   const fetchItems = async (center) => {
-    const data = await fetch("/api/yelp")
+    const req = await fetch(`/api/yelp/${center.lat}/${center.lng}`)
       .then((res) => res.json())
-      .then((json) => console.log(json));
-    // console.log(data.json());
-    // setSpots(data.data.businesses);
+      .then((business) => setSpots(business));
+    // console.log(req);
+    // console.log(data);
   };
 
   const fetchDirections = async (destination) => {
