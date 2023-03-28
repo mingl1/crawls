@@ -42,12 +42,14 @@ function MapView() {
   const [spots, setSpots] = useState([]);
   const [directions, setDirections] = useState(null);
   const [shown, setShown] = useState(true);
+  const [visibility, setVisibility] = useState(false);
   const places = [];
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
 
   const fetchItems = async (center) => {
-    const req = await fetch(`/api/yelp/${center.lat}/${center.lng}`)
+    setVisibility(true);
+    const res = await fetch(`/api/yelp/${center.lat}/${center.lng}`)
       .then((res) => res.json())
       .then((business) => setSpots(business));
   };
@@ -98,10 +100,12 @@ function MapView() {
             }}
           />
         )}
+
         {origin != center && (
           <div>
             <Marker position={origin} visible={shown} />
-            {spots.map((loc) => {
+            {/* <Circle center={origin} radius={450} options={walkable} /> */}
+            {spots?.map((loc) => {
               const pos = {
                 lat: loc.coordinates.latitude,
                 lng: loc.coordinates.longitude,
@@ -133,6 +137,12 @@ function MapView() {
             })}
           </div>
         )}
+        <Circle
+          center={origin}
+          visible={visibility}
+          radius={450}
+          options={walkable}
+        />
       </GoogleMap>
     </div>
   );

@@ -1,7 +1,7 @@
 import axios from "axios";
-// const fetchItems = async (req, res) => {};
 export async function GET(request, { params }) {
-  const { lat, lng } = params;
+  const { lat, lng, radius } = params;
+
   const req = await axios.get(
     `https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lng}&term=resturants&radius=450&limit=4`,
     {
