@@ -24,7 +24,7 @@ const options = {
 
 const script = {
   googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
-  libraries: ["places"],
+  libraries: ["maps", "places"],
 };
 
 // const houses = useMemo(()=>
@@ -45,22 +45,11 @@ function MapView() {
   const places = [];
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
-  // const fetchItems = async (center) => {
-  //   const data = await axios
-  //     .get("./api/yelp")
-  //     .then((json) => {
-  //       setSpots(json.data.businesses);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+
   const fetchItems = async (center) => {
     const req = await fetch(`/api/yelp/${center.lat}/${center.lng}`)
       .then((res) => res.json())
       .then((business) => setSpots(business));
-    // console.log(req);
-    // console.log(data);
   };
 
   const fetchDirections = async (destination) => {
@@ -83,7 +72,7 @@ function MapView() {
     setShown(false);
   };
   return (
-    <>
+    <div>
       <div className="absolute left-2 top-2 z-10 max-w-sm bg-transparent search">
         <Places
           setOrigin={(position) => {
@@ -110,7 +99,7 @@ function MapView() {
           />
         )}
         {origin != center && (
-          <>
+          <div>
             <Marker position={origin} visible={shown} />
             {spots.map((loc) => {
               const pos = {
@@ -142,10 +131,10 @@ function MapView() {
                 />
               );
             })}
-          </>
+          </div>
         )}
       </GoogleMap>
-    </>
+    </div>
   );
 }
 const defaultOptions = {
