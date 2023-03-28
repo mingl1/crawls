@@ -36,7 +36,11 @@ export default function Places({ setOrigin }) {
     }
   };
   return (
-    <Combobox onSelect={handleSelect} className="w-full drop-shadow-md ">
+    <Combobox
+      onSelect={handleSelect}
+      className="w-full drop-shadow-md"
+      openOnFocus
+    >
       <ComboboxInput
         placeholder="search an addresss"
         value={value}
@@ -45,9 +49,13 @@ export default function Places({ setOrigin }) {
         className="w-50 sm:w-full p-2 rounded-md bg-[#3A5A40] text-white 
     placeholder-[#DAD7CD]
     focus:outline-none"
+        autoFocus={true}
+        onFocus={() => {
+          document.querySelector("[hidden]").style.display = "block";
+        }}
       />
       <ComboboxPopover className="drop-shadow-md">
-        <ComboboxList className="bg-forest rounded-md to-pea text-egg w-full">
+        <ComboboxList className="bg-forest/75 rounded-md to-pea text-[#D1D1D1] w-full">
           {status === "OK" &&
             data.map(({ place_id, description }) => (
               <div

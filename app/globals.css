@@ -48,3 +48,6 @@ html, body {
   border: none !important;
   background: none !important;
 }
+/* [hidden]{
+  display: block !important;
+} */
