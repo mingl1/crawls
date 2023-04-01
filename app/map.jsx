@@ -36,19 +36,25 @@ export default function Map() {
   }
   return <MapView />;
 }
-
+let circle;
 function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
   const [directions, setDirections] = useState(null);
   const [shown, setShown] = useState(true);
-  const [visibility, setVisibility] = useState(false);
   const places = [];
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
 
   const fetchItems = async (center) => {
-    setVisibility(true);
+    circle = new window.google.maps.Circle({
+      center: center,
+      radius: 450,
+      options: walkable,
+    });
+
+    circle.setMap(mapRef.current);
+
     const res = await fetch(`/api/yelp/${center.lat}/${center.lng}`)
       .then((res) => res.json())
       .then((business) => setSpots(business));
@@ -80,6 +86,9 @@ function MapView() {
           setOrigin={(position) => {
             setOrigin(position);
             mapRef.current.panTo(position);
+            if (circle != null) {
+              circle.setMap(null);
+            }
             fetchItems(position);
           }}
           className="w-full"
@@ -137,12 +146,6 @@ function MapView() {
             })}
           </div>
         )}
-        <Circle
-          center={origin}
-          visible={visibility}
-          radius={450}
-          options={walkable}
-        />
       </GoogleMap>
     </div>
   );
