@@ -21,10 +21,10 @@ const options = {
   mapTypeControl: false,
   zoomControl: false,
 };
-
+const lib = ["maps", "places"];
 const script = {
   googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
-  libraries: ["maps", "places"],
+  libraries: lib,
 };
 
 // const houses = useMemo(()=>
@@ -42,10 +42,11 @@ function MapView() {
   const [spots, setSpots] = useState([]);
   const [directions, setDirections] = useState(null);
   const [shown, setShown] = useState(true);
-  const places = [];
+  // const places = [];
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
-
+  // console.log(places);
+  console.log(spots);
   const fetchItems = async (center) => {
     circle = new window.google.maps.Circle({
       center: center,
@@ -67,7 +68,7 @@ function MapView() {
       {
         origin: origin,
         destination: destination,
-        waypoints: places,
+        waypoints: spots,
         optimizeWaypoints: true,
         travelMode: window.google.maps.TravelMode.WALKING,
       },
@@ -119,12 +120,12 @@ function MapView() {
                 lat: loc.coordinates.latitude,
                 lng: loc.coordinates.longitude,
               };
-              places.push({
-                location: {
-                  lat: loc.coordinates.latitude,
-                  lng: loc.coordinates.longitude,
-                },
-              });
+              // places.push({
+              //   location: {
+              //     lat: loc.coordinates.latitude,
+              //     lng: loc.coordinates.longitude,
+              //   },
+              // });
               return (
                 <Marker
                   label={loc.name}
