@@ -40,6 +40,7 @@ export default function Map() {
   return <MapView />;
 }
 let circle;
+let directionsRenderer;
 function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
@@ -76,6 +77,12 @@ function MapView() {
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           setDirections(result);
+          directionsRenderer = new window.google.maps.DirectionsRenderer({
+            directions: result,
+            zIndex: 50,
+          });
+          console.log(directionsRenderer);
+          directionsRenderer.setMap(mapRef.current);
         }
       }
     );
@@ -91,6 +98,11 @@ function MapView() {
             if (circle != null) {
               circle.setMap(null);
             }
+            if (directionsRenderer != null) {
+              directionsRenderer.setMap(null);
+              setShown(true);
+            }
+
             fetchItems(position);
           }}
           className="w-full"
@@ -103,15 +115,6 @@ function MapView() {
         options={options}
         onLoad={onLoad}
       >
-        {directions && (
-          <DirectionsRenderer
-            directions={directions}
-            options={{
-              zIndex: 50,
-            }}
-          />
-        )}
-
         {origin != center && (
           <div>
             <Marker position={origin} visible={shown} />
@@ -132,7 +135,9 @@ function MapView() {
                   label={loc.name}
                   key={loc.id}
                   position={pos}
-                  onDblClick={() => fetchDirections(pos)}
+                  onDblClick={() => {
+                    fetchDirections(pos);
+                  }}
                   // className="opacity-50"
                   opacity={0.7}
                   visible={shown}

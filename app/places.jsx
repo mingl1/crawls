@@ -28,7 +28,7 @@ export default function Places({ setOrigin }) {
     clearSuggestions();
     try {
       const results = await getGeocode({ address });
-      const { lat, lng } = await getLatLng(results[0]);
+      const { lat, lng } = getLatLng(results[0]);
       setOrigin({ lat, lng });
       console.log("Coordinates: ", { lat, lng });
     } catch (error) {
