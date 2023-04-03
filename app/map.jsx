@@ -29,7 +29,10 @@ const script = {
 
 // const houses = useMemo(()=>
 export default function Map() {
-  const { isLoaded } = useLoadScript(script);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
+    libraries: lib,
+  });
 
   if (!isLoaded) {
     return <div className="self-center text-center">Loading...</div>;
@@ -42,11 +45,9 @@ function MapView() {
   const [spots, setSpots] = useState([]);
   const [directions, setDirections] = useState(null);
   const [shown, setShown] = useState(true);
-  // const places = [];
   const mapRef = useRef();
+  const places = [];
   const onLoad = useCallback((map) => (mapRef.current = map), []);
-  // console.log(places);
-  console.log(spots);
   const fetchItems = async (center) => {
     circle = new window.google.maps.Circle({
       center: center,
@@ -68,7 +69,7 @@ function MapView() {
       {
         origin: origin,
         destination: destination,
-        waypoints: spots,
+        waypoints: places,
         optimizeWaypoints: true,
         travelMode: window.google.maps.TravelMode.WALKING,
       },
@@ -114,18 +115,18 @@ function MapView() {
         {origin != center && (
           <div>
             <Marker position={origin} visible={shown} />
-            {/* <Circle center={origin} radius={450} options={walkable} /> */}
             {spots?.map((loc) => {
               const pos = {
                 lat: loc.coordinates.latitude,
                 lng: loc.coordinates.longitude,
               };
-              // places.push({
-              //   location: {
-              //     lat: loc.coordinates.latitude,
-              //     lng: loc.coordinates.longitude,
-              //   },
-              // });
+
+              places.push({
+                location: {
+                  ...pos,
+                },
+              });
+
               return (
                 <Marker
                   label={loc.name}
@@ -136,10 +137,6 @@ function MapView() {
                   opacity={0.7}
                   visible={shown}
                   onMouseOver={() => {
-                    // setOpacity((prev) => ({
-                    //   ...prev,
-                    //   [loc.id]: 1,
-                    // }));
                     console.log("over");
                   }}
                 />
