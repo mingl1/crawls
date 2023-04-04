@@ -14,7 +14,7 @@ import location from "./assets/location.svg";
 import Image from "next/image";
 
 // import "@fortawesome/fontawesome-free/css/all.css";
-export default function Places({ setOrigin }) {
+export default function Places({ setOrigin, spots }) {
   const {
     ready,
     value,
@@ -82,6 +82,34 @@ export default function Places({ setOrigin }) {
               </div>
             ))}
         </ComboboxList>
+        {spots[0] != null && (
+          <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
+            {spots?.map((loc) => {
+              console.log(loc);
+              return (
+                <div
+                  key={loc.lat}
+                  className={`flex lg:p-5 md:p-5 ${
+                    loc != spots[0] ? "my-5" : "mb-5"
+                  }`}
+                >
+                  <Image
+                    src={loc.image_url}
+                    className="w-1/2 h-36 object-cover flex-1 min-w-[192px]"
+                    width={160}
+                    height={260}
+                    alt={loc.alias}
+                  />
+                  <div className="flex-1 overflow-hidden text-center p-1">
+                    <p className="font-bold whitespace-nowrap overflow-hidden overflow-ellipsis text-white">
+                      {loc.name}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </ComboboxPopover>
     </Combobox>
   );

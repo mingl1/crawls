@@ -37,6 +37,22 @@ export default function Map() {
 }
 let circle;
 let directionsRenderer;
+
+const styles = {
+  default: [],
+  hide: [
+    {
+      featureType: "poi.business",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "transit",
+      elementType: "labels.icon",
+      stylers: [{ visibility: "off" }],
+    },
+  ],
+};
+
 function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
@@ -98,11 +114,17 @@ function MapView() {
               directionsRenderer.setMap(null);
               setShown(true);
             }
+            // mapRef.current.options = {
+            //   ...mapRef.current.optioions,
+            //   styles: styles["hide"],
+            // };
 
             fetchItems(position);
           }}
           className="w-full"
+          spots={spots}
         />
+        {/* <div className="w-24 h-24 bg-violet-700 z-50 relative"></div> */}
       </div>
       <GoogleMap
         zoom={14.5}
@@ -128,7 +150,14 @@ function MapView() {
 
               return (
                 <Marker
-                  label={loc.name}
+                  label={{
+                    text: loc.name,
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    opacity: 1,
+                    className: "translate-x-2/3",
+                  }}
                   key={loc.id}
                   position={pos}
                   onDblClick={() => {
