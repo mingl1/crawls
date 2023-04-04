@@ -3,9 +3,9 @@ import { useState, useMemo, useCallback, useRef } from "react";
 import {
   GoogleMap,
   Marker,
-  DirectionsRenderer,
-  Circle,
-  MarkerClusterer,
+  // DirectionsRenderer,
+  // Circle,
+  // MarkerClusterer,
 } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
@@ -22,10 +22,6 @@ const options = {
   zoomControl: false,
 };
 const lib = ["maps", "places"];
-const script = {
-  googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
-  libraries: lib,
-};
 
 // const houses = useMemo(()=>
 export default function Map() {
