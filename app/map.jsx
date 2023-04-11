@@ -56,7 +56,7 @@ const styles = {
 function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
-  const [directions, setDirections] = useState(null);
+  // const [directions, setDirections] = useState(null);
   const [shown, setShown] = useState(true);
   const mapRef = useRef();
   const places = [];
@@ -95,8 +95,6 @@ function MapView() {
     )
       return;
     const directionsService = new window.google.maps.DirectionsService();
-    console.log(destination);
-    console.log(places);
     directionsService.route(
       {
         origin: origin,
