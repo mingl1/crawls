@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
   GoogleMap,
   Marker,
@@ -21,7 +21,7 @@ const options = {
   mapTypeControl: false,
   zoomControl: false,
 };
-const lib = ["maps", "places"];
+const lib = ["places"];
 
 // const houses = useMemo(()=>
 export default function Map() {
