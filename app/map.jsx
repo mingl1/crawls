@@ -89,19 +89,29 @@ function MapView() {
   };
 
   const fetchDirections = async (destination) => {
-    if (!destination || destination === origin) return;
+    if (
+      !destination ||
+      (destination.lat == origin.lat && destination.lng == origin.lng)
+    )
+      return;
     const directionsService = new window.google.maps.DirectionsService();
+    console.log(destination);
+    console.log(places);
     directionsService.route(
       {
         origin: origin,
         destination: destination,
-        waypoints: places,
+        waypoints: places.filter(
+          (place) =>
+            place.location.lat != destination.lat &&
+            place.location.lng != destination.lng
+        ),
         optimizeWaypoints: true,
         travelMode: window.google.maps.TravelMode.WALKING,
       },
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
-          setDirections(result);
+          // setDirections(result);
           directionsRenderer = new window.google.maps.DirectionsRenderer({
             directions: result,
             zIndex: 50,
