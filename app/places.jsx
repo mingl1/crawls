@@ -12,6 +12,7 @@ import {
 import "@reach/combobox/styles.css";
 import location from "./assets/location.svg";
 import Image from "next/image";
+import noResults from "./assets/noResults.png";
 
 // import "@fortawesome/fontawesome-free/css/all.css";
 export default function Places({ setOrigin, spots }) {
@@ -71,8 +72,6 @@ export default function Places({ setOrigin, spots }) {
                     height="5"
                   />
                 </div>
-                {/* <FontAwesomeIcon icon="fa-solid fa-location-dot" /> */}
-                {/* <div className=""> */}
                 <ComboboxOption
                   value={description}
                   className="flex-[5] my-auto align-middle truncate"
@@ -95,7 +94,7 @@ export default function Places({ setOrigin, spots }) {
                   }`}
                 >
                   <Image
-                    src={loc.image_url}
+                    src={loc.image_url ? loc.image_url : noResults}
                     className="w-1/2 h-36 object-cover flex-1 min-w-[192px]"
                     width={160}
                     height={260}

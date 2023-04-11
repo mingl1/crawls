@@ -72,7 +72,20 @@ function MapView() {
 
     const res = await fetch(`/api/yelp/${center.lat}/${center.lng}`)
       .then((res) => res.json())
-      .then((business) => setSpots(business));
+      .then((business) =>
+        business[0]
+          ? setSpots(business)
+          : setSpots([
+              {
+                name: "no crawls found",
+                coordinates: {
+                  latitude: center.lat,
+                  longitude: center.lng,
+                },
+                alias: "no-results nearby",
+              },
+            ])
+      );
   };
 
   const fetchDirections = async (destination) => {
@@ -119,7 +132,6 @@ function MapView() {
           className="w-full"
           spots={spots}
         />
-        {/* <div className="w-24 h-24 bg-violet-700 z-50 relative"></div> */}
       </div>
       <GoogleMap
         zoom={14.5}
