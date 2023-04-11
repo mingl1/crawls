@@ -77,7 +77,6 @@ export default function Places({ setOrigin, spots }) {
                   className="flex-[5] my-auto align-middle truncate"
                   title={description}
                 />
-                {/* </div> */}
               </div>
             ))}
         </ComboboxList>
