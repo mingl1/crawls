@@ -82,6 +82,7 @@ export default function Places({ setOrigin, spots }) {
               </div>
             ))}
         </ComboboxList>
+
         {spots[0] != null && (
           <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
             {spots?.map((loc) => {

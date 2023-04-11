@@ -114,11 +114,6 @@ function MapView() {
               directionsRenderer.setMap(null);
               setShown(true);
             }
-            // mapRef.current.options = {
-            //   ...mapRef.current.optioions,
-            //   styles: styles["hide"],
-            // };
-
             fetchItems(position);
           }}
           className="w-full"
@@ -163,7 +158,6 @@ function MapView() {
                   onDblClick={() => {
                     fetchDirections(pos);
                   }}
-                  // className="opacity-50"
                   opacity={0.7}
                   visible={shown}
                   onMouseOver={() => {
