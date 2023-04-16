@@ -42,13 +42,13 @@ export default function Places({ setOrigin, spots, show }) {
       openOnFocus
     >
       <ComboboxInput
-        placeholder="search an addresss"
+        placeholder="Got a place in mind?"
         value={value}
         disabled={!ready}
         onChange={(e) => setValue(e.target.value)}
         className="p-2 rounded-md bg-[#3A5A40] text-white 
     placeholder-[#DAD7CD]
-    focus:outline-none w-[98%]"
+    focus:outline-none w-[98%] placeholder:text-[#AFC0AF] font-medium placeholder:font-normal tracking-wide"
         autoFocus={true}
         onFocus={() => {
           document.querySelector("[hidden]").style.display = "block";
