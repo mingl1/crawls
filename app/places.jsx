@@ -38,7 +38,7 @@ export default function Places({ setOrigin, spots, show }) {
   return (
     <Combobox
       onSelect={handleSelect}
-      className="w-full drop-shadow-md"
+      className="w-full drop-shadow-md "
       openOnFocus
     >
       <ComboboxInput
@@ -46,9 +46,9 @@ export default function Places({ setOrigin, spots, show }) {
         value={value}
         disabled={!ready}
         onChange={(e) => setValue(e.target.value)}
-        className="w-50 sm:w-full p-2 rounded-md bg-[#3A5A40] text-white 
+        className="p-2 rounded-md bg-[#3A5A40] text-white 
     placeholder-[#DAD7CD]
-    focus:outline-none"
+    focus:outline-none w-[98%]"
         autoFocus={true}
         onFocus={() => {
           document.querySelector("[hidden]").style.display = "block";

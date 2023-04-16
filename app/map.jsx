@@ -57,7 +57,6 @@ const styles = {
 function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
-  // const [directions, setDirections] = useState(null);
   const [shown, setShown] = useState(true);
   const mapRef = useRef();
   const places = [];
@@ -71,7 +70,7 @@ function MapView() {
 
     circle.setMap(mapRef.current);
 
-    const res = await fetch(`/api/yelp/${center.lat}/${center.lng}`)
+    await fetch(`/api/yelp/${center.lat}/${center.lng}`)
       .then((res) => res.json())
       .then((business) =>
         business[0]
@@ -146,7 +145,7 @@ function MapView() {
   };
   return (
     <div>
-      <div className="absolute left-2 top-2 z-10 max-w-sm bg-transparent search">
+      <div className="absolute left-2 top-2 z-10 w-[98%] lg:max-w-sm ">
         <Places
           setOrigin={(position) => {
             setOrigin(position);

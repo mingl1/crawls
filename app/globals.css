@@ -15,11 +15,6 @@ html, body {
   height: 100vh;
 }
 
-.search{
-  position: absolute;
-  width: 100%;
-}
-
 .fa-solid {
   width: 2.5rem;
   justify-content: center;
