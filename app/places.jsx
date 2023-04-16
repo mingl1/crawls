@@ -15,7 +15,7 @@ import Image from "next/image";
 import noResults from "./assets/noResults.png";
 
 // import "@fortawesome/fontawesome-free/css/all.css";
-export default function Places({ setOrigin, spots }) {
+export default function Places({ setOrigin, spots, show }) {
   const {
     ready,
     value,
@@ -31,7 +31,6 @@ export default function Places({ setOrigin, spots }) {
       const results = await getGeocode({ address });
       const { lat, lng } = getLatLng(results[0]);
       setOrigin({ lat, lng });
-      console.log("Coordinates: ", { lat, lng });
     } catch (error) {
       console.log("Error: ", error);
     }
@@ -83,8 +82,7 @@ export default function Places({ setOrigin, spots }) {
 
         {spots[0] != null && (
           <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
-            {spots?.map((loc) => {
-              console.log(loc);
+            {spots?.map((loc, index) => {
               return (
                 <div
                   key={loc.lat}
@@ -101,7 +99,11 @@ export default function Places({ setOrigin, spots }) {
                   />
                   <div className="flex-1 overflow-hidden text-center p-1">
                     <p className="font-bold whitespace-nowrap overflow-hidden overflow-ellipsis text-white">
-                      {loc.name}
+                      {!show
+                        ? String.fromCharCode("B".charCodeAt(0) + index) +
+                          ". " +
+                          loc.name
+                        : loc.name}
                     </p>
                   </div>
                 </div>

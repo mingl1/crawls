@@ -9,7 +9,7 @@ import {
 } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
-
+// import { getLatLng } from "use-places-autocomplete";
 const center = {
   lat: 40.72105,
   lng: -73.99672,
@@ -21,6 +21,7 @@ const options = {
   mapTypeControl: false,
   zoomControl: false,
 };
+
 const lib = ["places"];
 
 // const houses = useMemo(()=>
@@ -112,13 +113,35 @@ function MapView() {
           // setDirections(result);
           directionsRenderer = new window.google.maps.DirectionsRenderer({
             directions: result,
-            zIndex: 50,
           });
-          console.log(directionsRenderer);
+          const x = [];
+          for (let i = 0; i < result.routes[0].legs.length; i++) {
+            for (let j = 0; j < spots.length; j++) {
+              if (
+                result.routes[0].legs[i].start_address.includes(
+                  spots[j].location.address1
+                )
+              ) {
+                x.push(spots[j]);
+                break;
+              }
+            }
+          }
+          x.push(
+            spots.filter(
+              (place) =>
+                place.coordinates.latitude == destination.lat &&
+                place.coordinates.longitude == destination.lng
+            )[0]
+          );
+          setSpots(x);
+          // console.log(result.routes[0].legs[0].start_location.toJSON());
+          // setSpots()
           directionsRenderer.setMap(mapRef.current);
         }
       }
     );
+    // console.log(directionsService);
     setShown(false);
   };
   return (
@@ -127,7 +150,9 @@ function MapView() {
         <Places
           setOrigin={(position) => {
             setOrigin(position);
-            mapRef.current.panTo(position);
+            {
+              mapRef.current && mapRef.current.panTo(position);
+            }
             if (circle != null) {
               circle.setMap(null);
             }
@@ -137,8 +162,8 @@ function MapView() {
             }
             fetchItems(position);
           }}
-          className="w-full"
           spots={spots}
+          show={shown}
         />
       </div>
       <GoogleMap
@@ -170,7 +195,7 @@ function MapView() {
                     color: "black",
                     fontWeight: "bold",
                     fontSize: "1rem",
-                    opacity: 1,
+                    // opacity: 1,
                     className: "translate-x-2/3",
                   }}
                   key={loc.id}
