@@ -11,7 +11,14 @@ import location from "./assets/location.svg";
 import Image from "next/image";
 import noResults from "./assets/noResults.png";
 
-export default function Places({ setOrigin, spots, show, setSpots }) {
+export default function Places({
+  setOrigin,
+  spots,
+  show,
+  setSpots,
+  toGoogleMaps,
+  commited,
+}) {
   const {
     ready,
     value,
@@ -77,6 +84,16 @@ export default function Places({ setOrigin, spots, show, setSpots }) {
 
         {spots != null && spots[0] != null && (
           <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
+            {commited && (
+              <div className="w-full items-center flex justify-center align-middle">
+                <button
+                  className="bg-slate-800 text-green-500 p-2 rounded-md w-4/5 h-12"
+                  onClick={toGoogleMaps}
+                >
+                  Open In Google Maps
+                </button>
+              </div>
+            )}
             {spots?.map((loc, index) => {
               return (
                 <div
@@ -104,6 +121,7 @@ export default function Places({ setOrigin, spots, show, setSpots }) {
                 </div>
               );
             })}
+            {/* copilot give me a styled button */}
           </div>
         )}
       </ComboboxPopover>

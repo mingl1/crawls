@@ -49,12 +49,12 @@ function MapView() {
   const [spots, setSpots] = useState([]);
   const [shown, setShown] = useState(true);
   const mapRef = useRef();
-  const [loaded, setLoaded] = useState(false);
+  const [commited, setCommited] = useState(false);
 
   useEffect(() => {
     if (mapRef.current != null) {
       mapRef.current.panTo(origin.location);
-
+      setCommited(false);
       const fetchItems = async (center) => {
         originMarker = new google.maps.Marker({
           map: mapRef.current,
@@ -113,7 +113,6 @@ function MapView() {
   }, [origin]);
   const onLoad = useCallback((map) => {
     mapRef.current = map;
-    setLoaded(true);
   }, []);
 
   function selectDestination(loc) {
@@ -137,6 +136,7 @@ function MapView() {
   const fetchDirections = async (destination, dest) => {
     originMarker.setMap(null);
 
+    // console.log(`placeId=${encodeURIComponent(destination.placeId)}`);
     const place_ids = spots
       .map((spot) => ({
         location: { placeId: spot.placeId },
@@ -166,13 +166,37 @@ function MapView() {
           ]);
 
           mapRef.current.fitBounds(circle.getBounds());
-
+          setCommited(true);
           directionsRenderer.setMap(mapRef.current);
         }
       }
     );
     setShown(false);
+    // toGoogleMaps();
   };
+
+  function toGoogleMaps() {
+    let url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(
+      origin.location
+    )}&origin_place_id=${encodeURIComponent(
+      origin.placeId
+    )}&destination=${encodeURIComponent(
+      spots[spots.length - 1].alias
+    )}&destination_place_id=${encodeURIComponent(
+      spots[spots.length - 1].placeId
+    )}&travelmode=WALKING&waypoints=`;
+    for (let i = 0; i < spots.length - 1; i++) {
+      url = url + encodeURIComponent(spots[i].alias) + "%7C";
+    }
+    url += "&waypoint_place_ids=";
+    for (let i = 0; i < spots.length - 1; i++) {
+      url = url + encodeURIComponent(spots[i].placeId) + "%7C";
+    }
+
+    window.open(url, "_blank");
+
+    console.log(url);
+  }
   return (
     <>
       <div>
@@ -206,9 +230,11 @@ function MapView() {
                 setShown(true);
               }
             }}
+            toGoogleMaps={toGoogleMaps}
             spots={spots}
             show={shown}
             setSpots={setSpots}
+            commited={commited}
           />
         </div>
         <GoogleMap
