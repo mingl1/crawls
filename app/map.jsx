@@ -53,65 +53,65 @@ function MapView() {
     // console.log(origin.name);
     if (mapRef.current != null) {
       mapRef.current.panTo(origin.location);
+      const fetchItems = async (center) => {
+        originMarker = new google.maps.Marker({
+          map: mapRef.current,
+          place: {
+            placeId: origin.placeId,
+            location: origin.location,
+          },
+        });
+        circle = new window.google.maps.Circle({
+          center: center,
+          radius: 450,
+          options: walkable,
+        });
+        center = center.toJSON();
+        circle.setMap(mapRef.current);
+        service = new google.maps.places.PlacesService(mapRef.current);
+
+        await fetch(`/api/yelp/${center.lat}/${center.lng}`)
+          .then((res) => res.json())
+          .then((business) => {
+            if (business[0] != null) {
+              business.map((item) => {
+                const req = {
+                  query: item.name + " " + item.location.address1,
+                  fields: ["name", "place_id", "geometry"],
+                };
+                service.findPlaceFromQuery(req, (results, status) => {
+                  if (
+                    status === google.maps.places.PlacesServiceStatus.OK &&
+                    results
+                  ) {
+                    console.log({ ...item, placeId: results[0].place_id });
+                    setSpots((prev) => [
+                      ...prev,
+                      { ...item, placeId: results[0].place_id },
+                    ]);
+                  }
+                });
+              });
+            } else {
+              setSpots([
+                {
+                  name: "no crawls found",
+                  location: {
+                    latitude: center.lat,
+                    longitude: center.lng,
+                  },
+                  alias: "no-results nearby",
+                },
+              ]);
+            }
+          });
+      };
       fetchItems(origin.location);
     }
   }, [origin]);
   const onLoad = useCallback((map) => {
     mapRef.current = map;
   }, []);
-  const fetchItems = async (center) => {
-    originMarker = new google.maps.Marker({
-      map: mapRef.current,
-      place: {
-        placeId: origin.placeId,
-        location: origin.location,
-      },
-    });
-    circle = new window.google.maps.Circle({
-      center: center,
-      radius: 450,
-      options: walkable,
-    });
-    center = center.toJSON();
-    circle.setMap(mapRef.current);
-    service = new google.maps.places.PlacesService(mapRef.current);
-
-    await fetch(`/api/yelp/${center.lat}/${center.lng}`)
-      .then((res) => res.json())
-      .then((business) => {
-        if (business[0] != null) {
-          business.map((item) => {
-            const req = {
-              query: item.name + " " + item.location.address1,
-              fields: ["name", "place_id", "geometry"],
-            };
-            service.findPlaceFromQuery(req, (results, status) => {
-              if (
-                status === google.maps.places.PlacesServiceStatus.OK &&
-                results
-              ) {
-                console.log({ ...item, placeId: results[0].place_id });
-                setSpots((prev) => [
-                  ...prev,
-                  { ...item, placeId: results[0].place_id },
-                ]);
-              }
-            });
-          });
-        } else {
-          setSpots([
-            {
-              name: "no crawls found",
-              location: {
-                latitude: center.lat,
-                longitude: center.lng,
-              },
-              alias: "no-results nearby",
-            },
-          ]);
-        }
-      });
-  };
 
   const fetchDirections = async (destination, dest) => {
     originMarker.setMap(null);
