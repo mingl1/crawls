@@ -27,10 +27,7 @@ export default function Map() {
   }
   return <MapView />;
 }
-let circle;
-let directionsRenderer;
-let service;
-let originMarker;
+let circle, directionsRenderer, service, originMarker;
 const styles = {
   default: [],
   hide: [
