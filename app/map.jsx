@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
@@ -13,7 +13,7 @@ const options = {
   streetViewControl: false,
   fullscreenControl: false,
   mapTypeControl: false,
-  zoomControl: false,
+  zoomControl: true,
 };
 
 export default function Map() {
@@ -27,7 +27,8 @@ export default function Map() {
   }
   return <MapView />;
 }
-let circle, directionsRenderer, service, originMarker;
+let circle, directionsRenderer, service, originMarker, directionService;
+// let markers = [];
 const styles = {
   default: [],
   hide: [
@@ -48,11 +49,12 @@ function MapView() {
   const [spots, setSpots] = useState([]);
   const [shown, setShown] = useState(true);
   const mapRef = useRef();
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // console.log(origin.name);
     if (mapRef.current != null) {
       mapRef.current.panTo(origin.location);
+
       const fetchItems = async (center) => {
         originMarker = new google.maps.Marker({
           map: mapRef.current,
@@ -68,7 +70,7 @@ function MapView() {
         });
         center = center.toJSON();
         circle.setMap(mapRef.current);
-        service = new google.maps.places.PlacesService(mapRef.current);
+        // service = new google.maps.places.PlacesService(mapRef.current);
 
         await fetch(`/api/yelp/${center.lat}/${center.lng}`)
           .then((res) => res.json())
@@ -84,7 +86,7 @@ function MapView() {
                     status === google.maps.places.PlacesServiceStatus.OK &&
                     results
                   ) {
-                    console.log({ ...item, placeId: results[0].place_id });
+                    // console.log({ ...item, placeId: results[0].place_id });
                     setSpots((prev) => [
                       ...prev,
                       { ...item, placeId: results[0].place_id },
@@ -111,12 +113,29 @@ function MapView() {
   }, [origin]);
   const onLoad = useCallback((map) => {
     mapRef.current = map;
+    setLoaded(true);
   }, []);
 
+  function selectDestination(loc) {
+    // service = new window.google.maps.places.PlacesService(mapRef.current);
+    const request = {
+      query: loc.name + " " + loc.location.address1,
+      fields: ["name", "place_id", "geometry"],
+    };
+    service.findPlaceFromQuery(request, (results, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+        fetchDirections(
+          {
+            placeId: results[0].place_id,
+            location: results[0].geometry.location,
+          },
+          loc
+        );
+      }
+    });
+  }
   const fetchDirections = async (destination, dest) => {
     originMarker.setMap(null);
-    // console.log(spots);
-    console.log(spots);
 
     const place_ids = spots
       .map((spot) => ({
@@ -124,11 +143,7 @@ function MapView() {
         stopover: true,
       }))
       .filter((spot) => spot.location.placeId != destination.placeId);
-
-    const directionsService = new window.google.maps.DirectionsService(
-      mapRef.current
-    );
-    directionsService.route(
+    directionService = new window.google.maps.DirectionsService().route(
       {
         origin: { placeId: origin.placeId },
         destination: { placeId: destination.placeId },
@@ -140,6 +155,7 @@ function MapView() {
         if (status === window.google.maps.DirectionsStatus.OK) {
           directionsRenderer = new window.google.maps.DirectionsRenderer({
             directions: result,
+            preserveViewport: true,
           });
 
           setSpots((prev) => [
@@ -148,6 +164,9 @@ function MapView() {
               .map((value) => prev.find((spot) => spot.placeId == value)),
             dest,
           ]);
+
+          mapRef.current.fitBounds(circle.getBounds());
+
           directionsRenderer.setMap(mapRef.current);
         }
       }
@@ -218,30 +237,7 @@ function MapView() {
                     }}
                     key={count}
                     position={pos}
-                    onDblClick={() => {
-                      service = new window.google.maps.places.PlacesService(
-                        mapRef.current
-                      );
-                      const request = {
-                        query: loc.name + " " + loc.location.address1,
-                        fields: ["name", "place_id", "geometry"],
-                      };
-                      service.findPlaceFromQuery(request, (results, status) => {
-                        if (
-                          status ===
-                            google.maps.places.PlacesServiceStatus.OK &&
-                          results
-                        ) {
-                          fetchDirections(
-                            {
-                              placeId: results[0].place_id,
-                              location: results[0].geometry.location,
-                            },
-                            loc
-                          );
-                        }
-                      });
-                    }}
+                    onDblClick={() => selectDestination(loc)}
                     opacity={0.7}
                     visible={shown}
                     onMouseOver={() => {
