@@ -66,7 +66,7 @@ function MapView() {
     originMarker = new google.maps.Marker({
       map: mapRef.current,
       place: {
-        placeId: origin.place_id,
+        placeId: origin.placeId,
         location: origin.location,
       },
     });
