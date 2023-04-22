@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
-i;
+
 const center = {
   lat: 40.72105,
   lng: -73.99672,
