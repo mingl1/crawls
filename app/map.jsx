@@ -133,10 +133,7 @@ function MapView() {
         }
       });
     }
-    makeDirections(destination, dest, place_ids, places);
-  };
 
-  const makeDirections = (destination, dest, place_ids, places) => {
     const directionsService = new window.google.maps.DirectionsService(
       mapRef.current
     );
