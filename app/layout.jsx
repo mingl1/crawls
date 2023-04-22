@@ -4,7 +4,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <title>CRAWLS</title>
+        <title>CRAWLS - Discover Food</title>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
       </head>

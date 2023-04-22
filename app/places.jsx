@@ -13,8 +13,8 @@ import "@reach/combobox/styles.css";
 import location from "./assets/location.svg";
 import Image from "next/image";
 import noResults from "./assets/noResults.png";
-
 // import "@fortawesome/fontawesome-free/css/all.css";
+
 export default function Places({ setOrigin, spots, show }) {
   const {
     ready,
@@ -28,9 +28,7 @@ export default function Places({ setOrigin, spots, show }) {
     setValue(address, false);
     clearSuggestions();
     try {
-      const results = await getGeocode({ address });
-      const { lat, lng } = getLatLng(results[0]);
-      setOrigin({ lat, lng });
+      setOrigin(address);
     } catch (error) {
       console.log("Error: ", error);
     }
@@ -85,7 +83,7 @@ export default function Places({ setOrigin, spots, show }) {
             {spots?.map((loc, index) => {
               return (
                 <div
-                  key={loc.lat}
+                  key={index + 10}
                   className={`flex lg:p-5 md:p-5 ${
                     loc != spots[0] ? "my-5" : "mb-5"
                   }`}
