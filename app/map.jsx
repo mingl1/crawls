@@ -1,17 +1,9 @@
 "use client";
 import { useState, useCallback, useRef, useEffect } from "react";
-import {
-  GoogleMap,
-  Marker,
-  // DirectionsRenderer,
-  // Circle,
-  // MarkerClusterer,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
-import { getLatLng } from "use-places-autocomplete";
-// import { getLatLng } from "use-places-autocomplete";
-// import Example from "./bottom";
+i;
 const center = {
   lat: 40.72105,
   lng: -73.99672,
@@ -24,9 +16,6 @@ const options = {
   zoomControl: false,
 };
 
-// const lib = ["places"];
-
-// const houses = useMemo(()=>
 export default function Map() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -56,7 +45,6 @@ const styles = {
     },
   ],
 };
-// let place_ids = [];
 
 function MapView() {
   const [origin, setOrigin] = useState(center);
@@ -126,12 +114,6 @@ function MapView() {
           ]);
         }
       });
-    // .then((res) => {
-    //   console.log("working", res);
-    //   setInterval(() => {
-    //     console.log("working2", res);
-    //   }, 1000);
-    // });
   };
 
   const fetchDirections = async (destination, dest) => {
@@ -162,33 +144,8 @@ function MapView() {
           directionsRenderer = new window.google.maps.DirectionsRenderer({
             directions: result,
           });
-          // const res = result.routes[0].waypoint_order.map(
-          //   (value) => places[value]
-          // );
-
-          // res.push(dest);
-          // setSpots((prev)=>[, dest]);
-          // Promise.all(
-
-          // );
-          // console.log(result.routes[0].waypoint_order);
-          // const hashMap = result.routes[0].waypoint_order.flatMap((value) => ({
-          //   [place_ids[value].location.placeId]: value,
-          // }));
-          // const helper = ;
-          // const hashMap = helper.flatMap((value, counter) => ({
-          //   [value]: counter,
-          // }));
-          // console.log("helper ", helper);
-
-          // console.log("hmap ", hashMap);
 
           setSpots((prev) => [
-            // ...prev
-            // .filter((spot) => spot.placeId != destination.placeId)
-            // .sort((a, b) =>
-            // hashMap[a.placeId] > hashMap[b.placeId] ? 1 : -1
-            // ),
             ...result.routes[0].waypoint_order
               .map((value) => place_ids[value].location.placeId)
               .map((value) => prev.find((spot) => spot.placeId == value)),
@@ -218,7 +175,6 @@ function MapView() {
                   results
                 ) {
                   setOrigin({
-                    // name: results[0].name,
                     placeId: results[0].place_id,
                     location: results[0].geometry.location,
                   });
@@ -249,18 +205,10 @@ function MapView() {
           {spots != null && spots[0] != null && (
             <div>
               {spots?.map((loc, count) => {
-                // console.log(loc);
-
                 const pos = {
                   lat: loc.coordinates.latitude,
                   lng: loc.coordinates.longitude,
                 };
-
-                // places.push({
-                //   location: {
-                //     ...pos,
-                //   },
-                // });
 
                 return (
                   <Marker
@@ -269,7 +217,6 @@ function MapView() {
                       color: "black",
                       fontWeight: "bold",
                       fontSize: "1rem",
-                      // opacity: 1,
                       className: "translate-x-2/3",
                     }}
                     key={count}
@@ -290,10 +237,8 @@ function MapView() {
                         ) {
                           fetchDirections(
                             {
-                              // name: results[0].name,
                               placeId: results[0].place_id,
                               location: results[0].geometry.location,
-                              // id: loc.id,
                             },
                             loc
                           );

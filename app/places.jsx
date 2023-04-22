@@ -1,7 +1,4 @@
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+import usePlacesAutocomplete from "use-places-autocomplete";
 import {
   Combobox,
   ComboboxInput,
@@ -13,7 +10,6 @@ import "@reach/combobox/styles.css";
 import location from "./assets/location.svg";
 import Image from "next/image";
 import noResults from "./assets/noResults.png";
-// import "@fortawesome/fontawesome-free/css/all.css";
 
 export default function Places({ setOrigin, spots, show, setSpots }) {
   const {
