@@ -56,13 +56,13 @@ const styles = {
     },
   ],
 };
+// let place_ids = [];
 
 function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
   const [shown, setShown] = useState(true);
   const mapRef = useRef();
-  // const places = [];
 
   useEffect(() => {
     // console.log(origin.name);
@@ -89,50 +89,62 @@ function MapView() {
     });
     center = center.toJSON();
     circle.setMap(mapRef.current);
+    service = new google.maps.places.PlacesService(mapRef.current);
 
     await fetch(`/api/yelp/${center.lat}/${center.lng}`)
       .then((res) => res.json())
-      .then((business) =>
-        business[0]
-          ? setSpots(business)
-          : setSpots([
-              {
-                name: "no crawls found",
-                location: {
-                  latitude: center.lat,
-                  longitude: center.lng,
-                },
-                alias: "no-results nearby",
+      .then((business) => {
+        if (business[0] != null) {
+          business.map((item) => {
+            const req = {
+              query: item.name + " " + item.location.address1,
+              fields: ["name", "place_id", "geometry"],
+            };
+            service.findPlaceFromQuery(req, (results, status) => {
+              if (
+                status === google.maps.places.PlacesServiceStatus.OK &&
+                results
+              ) {
+                console.log({ ...item, placeId: results[0].place_id });
+                setSpots((prev) => [
+                  ...prev,
+                  { ...item, placeId: results[0].place_id },
+                ]);
+              }
+            });
+          });
+        } else {
+          setSpots([
+            {
+              name: "no crawls found",
+              location: {
+                latitude: center.lat,
+                longitude: center.lng,
               },
-            ])
-      );
+              alias: "no-results nearby",
+            },
+          ]);
+        }
+      });
+    // .then((res) => {
+    //   console.log("working", res);
+    //   setInterval(() => {
+    //     console.log("working2", res);
+    //   }, 1000);
+    // });
   };
 
   const fetchDirections = async (destination, dest) => {
     originMarker.setMap(null);
     // console.log(spots);
-    console.log(destination);
+    console.log(spots);
 
-    const place_ids = [];
-    service = new window.google.maps.places.PlacesService(mapRef.current);
-    var places = spots.filter((spot) => spot.id != dest.id);
-
-    for (let i = 0; i < places.length; i++) {
-      const request = {
-        query: places[i].name + " " + places[i].location.address1,
-        fields: ["name", "place_id", "geometry"],
-      };
-
-      service.findPlaceFromQuery(request, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-          place_ids.push({
-            location: { placeId: results[0].place_id },
-            stopover: true,
-          });
-          spots[i].placeId = results[0].place_id;
-        }
-      });
-    }
+    const place_ids = spots
+      .map((spot) => ({
+        location: { placeId: spot.placeId },
+        stopover: true,
+      }))
+      .filter((spot) => spot.location.placeId != destination.placeId);
 
     const directionsService = new window.google.maps.DirectionsService(
       mapRef.current
@@ -150,11 +162,38 @@ function MapView() {
           directionsRenderer = new window.google.maps.DirectionsRenderer({
             directions: result,
           });
-          const res = result.routes[0].waypoint_order.map(
-            (value) => places[value]
-          );
-          res.push(dest);
-          setSpots(res);
+          // const res = result.routes[0].waypoint_order.map(
+          //   (value) => places[value]
+          // );
+
+          // res.push(dest);
+          // setSpots((prev)=>[, dest]);
+          // Promise.all(
+
+          // );
+          // console.log(result.routes[0].waypoint_order);
+          // const hashMap = result.routes[0].waypoint_order.flatMap((value) => ({
+          //   [place_ids[value].location.placeId]: value,
+          // }));
+          // const helper = ;
+          // const hashMap = helper.flatMap((value, counter) => ({
+          //   [value]: counter,
+          // }));
+          // console.log("helper ", helper);
+
+          // console.log("hmap ", hashMap);
+
+          setSpots((prev) => [
+            // ...prev
+            // .filter((spot) => spot.placeId != destination.placeId)
+            // .sort((a, b) =>
+            // hashMap[a.placeId] > hashMap[b.placeId] ? 1 : -1
+            // ),
+            ...result.routes[0].waypoint_order
+              .map((value) => place_ids[value].location.placeId)
+              .map((value) => prev.find((spot) => spot.placeId == value)),
+            dest,
+          ]);
           directionsRenderer.setMap(mapRef.current);
         }
       }
@@ -178,8 +217,6 @@ function MapView() {
                   status === google.maps.places.PlacesServiceStatus.OK &&
                   results
                 ) {
-                  // console.log(results);
-                  // for (let i = 0; i < results.length; i++) {
                   setOrigin({
                     // name: results[0].name,
                     placeId: results[0].place_id,
@@ -199,6 +236,7 @@ function MapView() {
             }}
             spots={spots}
             show={shown}
+            setSpots={setSpots}
           />
         </div>
         <GoogleMap
@@ -208,14 +246,8 @@ function MapView() {
           options={options}
           onLoad={onLoad}
         >
-          {origin != center && (
+          {spots != null && spots[0] != null && (
             <div>
-              <Marker
-                position={origin.location}
-                visible={shown}
-                place_id={origin.placeId}
-              />
-
               {spots?.map((loc, count) => {
                 // console.log(loc);
 

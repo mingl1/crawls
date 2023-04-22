@@ -15,7 +15,7 @@ import Image from "next/image";
 import noResults from "./assets/noResults.png";
 // import "@fortawesome/fontawesome-free/css/all.css";
 
-export default function Places({ setOrigin, spots, show }) {
+export default function Places({ setOrigin, spots, show, setSpots }) {
   const {
     ready,
     value,
@@ -28,6 +28,7 @@ export default function Places({ setOrigin, spots, show }) {
     setValue(address, false);
     clearSuggestions();
     try {
+      setSpots([]);
       setOrigin(address);
     } catch (error) {
       console.log("Error: ", error);
@@ -78,7 +79,7 @@ export default function Places({ setOrigin, spots, show }) {
             ))}
         </ComboboxList>
 
-        {spots[0] != null && (
+        {spots != null && spots[0] != null && (
           <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
             {spots?.map((loc, index) => {
               return (
