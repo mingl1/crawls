@@ -95,15 +95,16 @@ function MapView() {
     )
       return;
     const directionsService = new window.google.maps.DirectionsService();
+    const temp = places.filter(
+      (place) =>
+        place.location.lat != destination.lat &&
+        place.location.lng != destination.lng
+    );
     directionsService.route(
       {
         origin: origin,
         destination: destination,
-        waypoints: places.filter(
-          (place) =>
-            place.location.lat != destination.lat &&
-            place.location.lng != destination.lng
-        ),
+        waypoints: temp,
         optimizeWaypoints: true,
         travelMode: window.google.maps.TravelMode.WALKING,
       },
