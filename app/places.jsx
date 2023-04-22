@@ -28,9 +28,9 @@ export default function Places({ setOrigin, spots, show }) {
     setValue(address, false);
     clearSuggestions();
     try {
-      const results = await getGeocode({ address });
-      const { lat, lng } = getLatLng(results[0]);
-      setOrigin({ lat, lng });
+      // const results = await getGeocode({ address });
+      // const { lat, lng } = getLatLng(results[0]);
+      setOrigin(address);
     } catch (error) {
       console.log("Error: ", error);
     }
@@ -57,9 +57,9 @@ export default function Places({ setOrigin, spots, show }) {
       <ComboboxPopover className="drop-shadow-md">
         <ComboboxList className="bg-forest/75 rounded-md to-pea text-[#D1D1D1] w-full">
           {status === "OK" &&
-            data.map(({ place_id, description }) => (
+            data.map(({ place_id, description }, counter) => (
               <div
-                key={place_id}
+                key={counter + 20}
                 className="rounded-md flex hover:bg-[#426446] w-full p-1"
               >
                 <div className="flex-1 max-w-[25px] ">
@@ -85,7 +85,7 @@ export default function Places({ setOrigin, spots, show }) {
             {spots?.map((loc, index) => {
               return (
                 <div
-                  key={loc.lat}
+                  key={index + 10}
                   className={`flex lg:p-5 md:p-5 ${
                     loc != spots[0] ? "my-5" : "mb-5"
                   }`}
