@@ -47,7 +47,7 @@ const Places = memo(function Places({
     }
   };
 
-  console.log(isBrowser, isMobile);
+  // console.log(isBrowser, isMobile);
   return (
     <Combobox
       onSelect={handleSelect}
