@@ -49,6 +49,7 @@ function MapView() {
   const [origin, setOrigin] = useState(center);
   const [spots, setSpots] = useState([]);
   const [shown, setShown] = useState(true);
+  const [details, setDetails] = useState(false);
   const mapRef = useRef();
   const [commited, setCommited] = useState(false);
 
@@ -227,12 +228,14 @@ function MapView() {
                 directionsRenderer.setMap(null);
                 setShown(true);
               }
+              setDetails(true);
             }}
             toGoogleMaps={toGoogleMaps}
             spots={spots}
             show={shown}
             setSpots={setSpots}
             commited={commited}
+            details={details}
           />
         </div>
         <GoogleMap

@@ -11,6 +11,14 @@ import location from "./assets/location.svg";
 import Image from "next/image";
 import noResults from "./assets/noResults.png";
 import { memo } from "react";
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile,
+} from "react-device-detect";
+import "react-spring-bottom-sheet/dist/style.css";
+import Bottom from "./bottom";
 const Places = memo(function Places({
   setOrigin,
   spots,
@@ -18,6 +26,7 @@ const Places = memo(function Places({
   setSpots,
   toGoogleMaps,
   commited,
+  details,
 }) {
   const {
     ready,
@@ -37,6 +46,8 @@ const Places = memo(function Places({
       console.log("Error: ", error);
     }
   };
+
+  console.log(isBrowser, isMobile);
   return (
     <Combobox
       onSelect={handleSelect}
@@ -81,49 +92,58 @@ const Places = memo(function Places({
               </div>
             ))}
         </ComboboxList>
-
-        {spots != null && spots[0] != null && (
-          <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
-            {commited && (
-              <div className="w-full items-center flex justify-center align-middle">
-                <button
-                  className="bg-slate-800 text-green-500 p-2 rounded-md w-4/5 h-12"
-                  onClick={toGoogleMaps}
-                >
-                  Open In Google Maps
-                </button>
-              </div>
-            )}
-            {spots?.map((loc, index) => {
-              return (
-                <div
-                  key={index + 10}
-                  className={`flex lg:p-5 md:p-5 ${
-                    loc != spots[0] ? "my-5" : "mb-5"
-                  }`}
-                >
-                  <Image
-                    src={loc.image_url ? loc.image_url : noResults}
-                    className="w-1/2 h-36 object-cover flex-1 min-w-[192px]"
-                    width={160}
-                    height={260}
-                    alt={loc.alias}
-                  />
-                  <div className="flex-1 overflow-hidden text-center p-1">
-                    <p className="font-bold whitespace-nowrap overflow-hidden overflow-ellipsis text-white">
-                      {!show
-                        ? String.fromCharCode("B".charCodeAt(0) + index) +
-                          ". " +
-                          loc.name
-                        : loc.name}
-                    </p>
-                  </div>
+        <BrowserView>
+          {details && (
+            <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
+              {commited && (
+                <div className="w-full items-center flex justify-center align-middle">
+                  <button
+                    className="bg-slate-800 text-green-500 p-2 rounded-md w-4/5 h-12"
+                    onClick={toGoogleMaps}
+                  >
+                    Open In Google Maps
+                  </button>
                 </div>
-              );
-            })}
-            {/* copilot give me a styled button */}
-          </div>
-        )}
+              )}
+              {spots?.map((loc, index) => {
+                return (
+                  <div
+                    key={index + 10}
+                    className={`flex lg:p-5 md:p-5 ${
+                      loc != spots[0] ? "my-5" : "mb-5"
+                    }`}
+                  >
+                    <Image
+                      src={loc.image_url ? loc.image_url : noResults}
+                      className="w-1/2 h-36 object-cover flex-1 min-w-[192px] rounded-md"
+                      width={160}
+                      height={260}
+                      alt={loc.alias}
+                    />
+                    <div className="flex-1 overflow-hidden text-center p-1">
+                      <p className="font-bold whitespace-nowrap overflow-hidden overflow-ellipsis text-white">
+                        {!show
+                          ? String.fromCharCode("B".charCodeAt(0) + index) +
+                            ". " +
+                            loc.name
+                          : loc.name}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </BrowserView>
+        <MobileView>
+          <Bottom
+            details={details}
+            spots={spots}
+            show={show}
+            commited={commited}
+            toGoogleMaps={toGoogleMaps}
+          />
+        </MobileView>
       </ComboboxPopover>
     </Combobox>
   );

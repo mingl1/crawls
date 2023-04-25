@@ -46,3 +46,13 @@ html, body {
 /* [hidden]{
   display: block !important;
 } */
+
+:root {
+  --rsbs-backdrop-bg: rgba(0, 0, 0, 0);
+  --rsbs-bg: #3A5A40;
+  --rsbs-handle-bg: hsla(0, 0%, 0%, 0.14);
+  --rsbs-max-w: auto;
+  --rsbs-ml: env(safe-area-inset-left);
+  --rsbs-mr: env(safe-area-inset-right);
+  --rsbs-overlay-rounded: 16px;
+}
