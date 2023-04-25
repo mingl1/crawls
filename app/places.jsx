@@ -10,8 +10,8 @@ import "@reach/combobox/styles.css";
 import location from "./assets/location.svg";
 import Image from "next/image";
 import noResults from "./assets/noResults.png";
-
-export default function Places({
+import { memo } from "react";
+const Places = memo(function Places({
   setOrigin,
   spots,
   show,
@@ -127,4 +127,6 @@ export default function Places({
       </ComboboxPopover>
     </Combobox>
   );
-}
+});
+
+export default Places;

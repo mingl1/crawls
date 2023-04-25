@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
@@ -135,8 +136,6 @@ function MapView() {
   }
   const fetchDirections = async (destination, dest) => {
     originMarker.setMap(null);
-
-    // console.log(`placeId=${encodeURIComponent(destination.placeId)}`);
     const place_ids = spots
       .map((spot) => ({
         location: { placeId: spot.placeId },
@@ -172,10 +171,9 @@ function MapView() {
       }
     );
     setShown(false);
-    // toGoogleMaps();
   };
 
-  function toGoogleMaps() {
+  const toGoogleMaps = () => {
     let url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(
       origin.location
     )}&origin_place_id=${encodeURIComponent(
@@ -196,7 +194,7 @@ function MapView() {
     window.open(url, "_blank");
 
     console.log(url);
-  }
+  };
   return (
     <>
       <div>
@@ -244,7 +242,7 @@ function MapView() {
           options={options}
           onLoad={onLoad}
         >
-          {spots != null && spots[0] != null && (
+          {spots != null && spots[0] != null && shown && (
             <div>
               {spots?.map((loc, count) => {
                 const pos = {
@@ -263,9 +261,8 @@ function MapView() {
                     }}
                     key={count}
                     position={pos}
-                    onDblClick={() => selectDestination(loc)}
+                    onClick={() => selectDestination(loc)}
                     opacity={0.7}
-                    visible={shown}
                     onMouseOver={() => {
                       console.log("over");
                     }}
