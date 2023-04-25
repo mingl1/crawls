@@ -11,12 +11,7 @@ import location from "./assets/location.svg";
 import Image from "next/image";
 import noResults from "./assets/noResults.png";
 import { memo } from "react";
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect";
+import { BrowserView, MobileView } from "react-device-detect";
 import "react-spring-bottom-sheet/dist/style.css";
 import Bottom from "./bottom";
 const Places = memo(function Places({
@@ -47,7 +42,6 @@ const Places = memo(function Places({
     }
   };
 
-  // console.log(isBrowser, isMobile);
   return (
     <Combobox
       onSelect={handleSelect}
