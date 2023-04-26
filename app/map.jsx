@@ -58,6 +58,7 @@ function MapView() {
       mapRef.current.panTo(origin.location);
       setCommited(false);
       const fetchItems = async (center) => {
+        if (originMarker != null) originMarker.setMap(null);
         originMarker = new google.maps.Marker({
           map: mapRef.current,
           place: {
@@ -245,7 +246,7 @@ function MapView() {
           options={options}
           onLoad={onLoad}
         >
-          {spots != null && spots[0] != null && shown && (
+          {shown && (
             <div>
               {spots?.map((loc, count) => {
                 const pos = {
