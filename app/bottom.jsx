@@ -23,7 +23,7 @@ export default function Bottom({
       ]}
       className="w-full h-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1"
     >
-      {details && (
+      {details ? (
         <div className="w-full z-50 relative top-0 rounded-b-md pb-1">
           <h1 className="flex items-center text-xl justify-center font-bold text-gray-800">
             Details!
@@ -56,7 +56,7 @@ export default function Bottom({
               </div>
             );
           })}
-          {commited && (
+          {commited ? (
             <div className="w-full items-center flex justify-center align-middle">
               <button
                 className="bg-slate-800 text-green-500 p-2 rounded-md w-4/5 h-12"
@@ -65,9 +65,9 @@ export default function Bottom({
                 Open In Google Maps
               </button>
             </div>
-          )}
+          ) : null}
         </div>
-      )}
+      ) : null}
     </BottomSheet>
   );
 }

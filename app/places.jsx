@@ -87,7 +87,7 @@ const Places = memo(function Places({
             ))}
         </ComboboxList>
         <BrowserView>
-          {details && (
+          {details ? (
             <div className="w-full bg-gradient-to-b from-forest to-[#5a533a] z-50 relative top-0 rounded-b-md pb-1">
               {commited && (
                 <div className="w-full items-center flex justify-center align-middle">
@@ -127,7 +127,7 @@ const Places = memo(function Places({
                 );
               })}
             </div>
-          )}
+          ) : null}
         </BrowserView>
         <MobileView>
           <Bottom

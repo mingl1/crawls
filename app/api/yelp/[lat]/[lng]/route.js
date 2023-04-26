@@ -3,7 +3,7 @@ export async function GET(request, { params }) {
   const { lat, lng, radius } = params;
 
   const req = await axios.get(
-    `https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lng}&term=resturants&radius=450&limit=4`,
+    `https://api.yelp.com/v3/businesses/search?latitude=${lat}&longitude=${lng}&term=resturants&radius=400&limit=4`,
     {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_YELP_API_KEY}`,

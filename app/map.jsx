@@ -67,7 +67,7 @@ function MapView() {
         });
         circle = new window.google.maps.Circle({
           center: center,
-          radius: 450,
+          radius: 500,
           options: walkable,
         });
         center = center.toJSON();
@@ -100,7 +100,7 @@ function MapView() {
               setSpots([
                 {
                   name: "no crawls found",
-                  location: {
+                  coordinates: {
                     latitude: center.lat,
                     longitude: center.lng,
                   },
