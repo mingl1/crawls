@@ -52,6 +52,7 @@ function MapView() {
   const [details, setDetails] = useState(false);
   const mapRef = useRef();
   const [commited, setCommited] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     if (mapRef.current != null) {
@@ -199,7 +200,7 @@ function MapView() {
   };
   return (
     <>
-      <div>
+      <div className="w-screen h-screen">
         <div className="absolute left-2 top-2 z-10 w-[98%] lg:max-w-sm ">
           <Places
             setOrigin={(position) => {
@@ -239,44 +240,55 @@ function MapView() {
             details={details}
             selectDestination={selectDestination}
           />
+          <button
+            onClick={() => {
+              setShowMap((e) => !e);
+            }}
+            className="bg-black w-5 h-5"
+          >
+            click
+          </button>
         </div>
-        <GoogleMap
-          zoom={14.5}
-          center={center}
-          mapContainerClassName="map-view"
-          options={options}
-          onLoad={onLoad}
-        >
-          {shown && (
-            <div>
-              {spots?.map((loc, count) => {
-                const pos = {
-                  lat: loc.coordinates.latitude,
-                  lng: loc.coordinates.longitude,
-                };
 
-                return (
-                  <Marker
-                    label={{
-                      text: loc.name,
-                      color: "black",
-                      fontWeight: "bold",
-                      fontSize: "1rem",
-                      className: "translate-x-2/3",
-                    }}
-                    key={count}
-                    position={pos}
-                    onClick={() => selectDestination(loc)}
-                    opacity={0.7}
-                    onMouseOver={() => {
-                      console.log("over");
-                    }}
-                  />
-                );
-              })}
-            </div>
-          )}
-        </GoogleMap>
+        <div className="w-1/2 h-1/2">
+          <GoogleMap
+            zoom={14.5}
+            center={center}
+            mapContainerClassName={`map-view ${showMap ? "yesMap" : " noMap"}`}
+            options={options}
+            onLoad={onLoad}
+          >
+            {shown && (
+              <div>
+                {spots?.map((loc, count) => {
+                  const pos = {
+                    lat: loc.coordinates.latitude,
+                    lng: loc.coordinates.longitude,
+                  };
+
+                  return (
+                    <Marker
+                      label={{
+                        text: loc.name,
+                        color: "black",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        className: "translate-x-2/3",
+                      }}
+                      key={count}
+                      position={pos}
+                      onClick={() => selectDestination(loc)}
+                      opacity={0.7}
+                      onMouseOver={() => {
+                        console.log("over");
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </GoogleMap>
+        </div>
       </div>
       {/* <Example /> */}
     </>

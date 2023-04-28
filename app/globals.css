@@ -12,9 +12,15 @@ html, body {
 
 .map-view{
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  /* visibility: hidden; */
 }
-
+.noMap{
+  visibility: hidden;
+}
+.yesMap{
+  visibility: visible;
+}
 .fa-solid {
   width: 2.5rem;
   justify-content: center;
