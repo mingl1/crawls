@@ -237,6 +237,7 @@ function MapView() {
             setSpots={setSpots}
             commited={commited}
             details={details}
+            selectDestination={selectDestination}
           />
         </div>
         <GoogleMap

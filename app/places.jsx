@@ -22,6 +22,7 @@ const Places = memo(function Places({
   toGoogleMaps,
   commited,
   details,
+  selectDestination,
 }) {
   const {
     ready,
@@ -103,9 +104,12 @@ const Places = memo(function Places({
                 return (
                   <div
                     key={index + 10}
-                    className={`flex lg:p-5 md:p-5 ${
-                      loc != spots[0] ? "my-5" : "mb-5"
-                    }`}
+                    className={`flex lg:p-5 ${
+                      !commited ? "cursor-pointer" : ""
+                    } md:p-5 ${loc != spots[0] ? "my-5" : "mb-5"}} `}
+                    onClick={() =>
+                      !commited ? selectDestination(loc) : console.log("no")
+                    }
                   >
                     <Image
                       src={loc.image_url ? loc.image_url : noResults}
@@ -136,6 +140,7 @@ const Places = memo(function Places({
             show={show}
             commited={commited}
             toGoogleMaps={toGoogleMaps}
+            selectDestination={selectDestination}
           />
         </MobileView>
       </ComboboxPopover>
