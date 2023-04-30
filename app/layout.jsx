@@ -1,4 +1,6 @@
 import "./globals.css";
+import "@smastrom/react-rating/style.css";
+
 import { Analytics } from "@vercel/analytics/react";
 export default function RootLayout({ children }) {
   return (

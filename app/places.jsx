@@ -14,6 +14,8 @@ import { memo } from "react";
 import { BrowserView, MobileView } from "react-device-detect";
 import "react-spring-bottom-sheet/dist/style.css";
 import Bottom from "./bottom";
+import { Rating, RoundedStar } from "@smastrom/react-rating";
+
 const Places = memo(function Places({
   setOrigin,
   spots,
@@ -42,7 +44,7 @@ const Places = memo(function Places({
       console.log("Error: ", error);
     }
   };
-
+  console.log(spots);
   return (
     <Combobox
       onSelect={handleSelect}
@@ -126,6 +128,20 @@ const Places = memo(function Places({
                             loc.name
                           : loc.name}
                       </p>
+                      {!commited && (
+                        <Rating
+                          readOnly={true}
+                          // style={{ maxWidth: 90% }}
+                          className="w-4/5 mx-auto"
+                          value={loc.rating}
+                          halfFillMode="svg"
+                          itemStyles={{
+                            itemShapes: RoundedStar,
+                            activeFillColor: "#ffb700",
+                            inactiveFillColor: "#fbf1a9",
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 );
