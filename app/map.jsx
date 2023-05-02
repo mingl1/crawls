@@ -4,7 +4,8 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
-
+import d from "./assets/default.png";
+import Image from "next/image";
 const center = {
   lat: 40.72105,
   lng: -73.99672,
@@ -25,7 +26,11 @@ export default function Map() {
   });
 
   if (!isLoaded) {
-    return <div className="self-center text-center">Loading...</div>;
+    return (
+      <div className="w-screen h-screen">
+        <Image src={d} alt="loading" className="w-full h-full" />
+      </div>
+    );
   }
   return <MapView />;
 }
