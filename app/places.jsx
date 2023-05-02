@@ -44,7 +44,6 @@ const Places = memo(function Places({
       console.log("Error: ", error);
     }
   };
-  console.log(spots);
   return (
     <Combobox
       onSelect={handleSelect}
@@ -131,7 +130,6 @@ const Places = memo(function Places({
                       {!commited && (
                         <Rating
                           readOnly={true}
-                          // style={{ maxWidth: 90% }}
                           className="w-4/5 mx-auto"
                           value={loc.rating}
                           halfFillMode="svg"

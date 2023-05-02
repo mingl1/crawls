@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useState, useCallback, useRef, useEffect, useMemo } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import Places from "./places";
 import { useLoadScript } from "@react-google-maps/api";
@@ -203,7 +203,6 @@ function MapView() {
         <div className="absolute left-2 top-2 z-10 w-[98%] lg:max-w-sm ">
           <Places
             setOrigin={(position) => {
-              console.log(position);
               const request = {
                 query: position,
                 fields: ["name", "place_id", "geometry"],
@@ -218,7 +217,6 @@ function MapView() {
                     placeId: results[0].place_id,
                     location: results[0].geometry.location,
                   });
-                  // }
                 }
               });
 
@@ -278,7 +276,6 @@ function MapView() {
           )}
         </GoogleMap>
       </div>
-      {/* <Example /> */}
     </>
   );
 }
