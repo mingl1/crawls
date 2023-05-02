@@ -9,6 +9,7 @@ const center = {
   lat: 40.72105,
   lng: -73.99672,
 };
+
 const options = {
   mapId: process.env.NEXT_PUBLIC_MAP_ID,
   streetViewControl: false,
@@ -28,22 +29,13 @@ export default function Map() {
   }
   return <MapView />;
 }
-let circle, directionsRenderer, service, originMarker, directionService;
+let circle,
+  directionsRenderer,
+  service,
+  originMarker,
+  directionService,
+  place_ids;
 // let markers = [];
-const styles = {
-  default: [],
-  hide: [
-    {
-      featureType: "poi.business",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "transit",
-      elementType: "labels.icon",
-      stylers: [{ visibility: "off" }],
-    },
-  ],
-};
 
 function MapView() {
   const [origin, setOrigin] = useState(center);
@@ -138,7 +130,7 @@ function MapView() {
   }
   const fetchDirections = async (destination, dest) => {
     originMarker.setMap(null);
-    const place_ids = spots
+    place_ids = spots
       .map((spot) => ({
         location: { placeId: spot.placeId },
         stopover: true,
