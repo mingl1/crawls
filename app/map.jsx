@@ -169,7 +169,7 @@ function MapView() {
             dest,
           ]);
 
-          // mapRef.current.fitBounds(circle.getBounds());
+          mapRef.current.fitBounds(circle.getBounds());
           setCommited(true);
           directionsRenderer.setMap(mapRef.current);
         }
