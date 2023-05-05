@@ -38,9 +38,8 @@ let circle,
   directionsRenderer,
   service,
   originMarker,
-  directionService,
+  // directionService,
   place_ids;
-// let markers = [];
 
 function MapView() {
   const [origin, setOrigin] = useState(center);
@@ -49,7 +48,7 @@ function MapView() {
   const [details, setDetails] = useState(false);
   const mapRef = useRef();
   const [commited, setCommited] = useState(false);
-
+  // console.log("rerendering");
   useEffect(() => {
     if (mapRef.current != null) {
       mapRef.current.panTo(origin.location);
@@ -71,7 +70,7 @@ function MapView() {
         center = center.toJSON();
         circle.setMap(mapRef.current);
         // service = new google.maps.places.PlacesService(mapRef.current);
-
+        const s = [];
         await fetch(`/api/yelp/${center.lat}/${center.lng}`)
           .then((res) => res.json())
           .then((business) => {
@@ -91,6 +90,12 @@ function MapView() {
                       ...prev,
                       { ...item, placeId: results[0].place_id },
                     ]);
+                    // s.push({ ...item, placeId: results[0].place_id });
+                    // if (s.length >= 3) {
+                    //   setSpots(s);
+                    // }
+                    // s.push({ ...item, placeId: results[0].place_id });
+                    // spots.push({ ...item, placeId: results[0].place_id });
                   }
                 });
               });
@@ -103,6 +108,7 @@ function MapView() {
                     longitude: center.lng,
                   },
                   alias: "no-results nearby",
+                  rating: -1,
                 },
               ]);
             }
@@ -141,7 +147,7 @@ function MapView() {
         stopover: true,
       }))
       .filter((spot) => spot.location.placeId != destination.placeId);
-    directionService = new window.google.maps.DirectionsService().route(
+    const directionService = new window.google.maps.DirectionsService().route(
       {
         origin: { placeId: origin.placeId },
         destination: { placeId: destination.placeId },
@@ -163,7 +169,7 @@ function MapView() {
             dest,
           ]);
 
-          mapRef.current.fitBounds(circle.getBounds());
+          // mapRef.current.fitBounds(circle.getBounds());
           setCommited(true);
           directionsRenderer.setMap(mapRef.current);
         }
