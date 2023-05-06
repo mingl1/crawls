@@ -103,7 +103,7 @@ const Places = memo(function Places({
                 </div>
               )}
 
-              {spots ? (
+              {spots[0] ? (
                 spots.map((loc, index) => (
                   <Poi
                     loc={loc}
