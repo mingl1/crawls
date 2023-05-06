@@ -3,6 +3,7 @@
 @tailwind utilities;
 * {
   box-sizing: border-box;
+  font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;
 }
 html, body {
   height: 100%;
