@@ -47,6 +47,7 @@ function MapView() {
   const [shown, setShown] = useState(true);
   const [details, setDetails] = useState(false);
   const mapRef = useRef();
+
   const [commited, setCommited] = useState(false);
   // console.log("rerendering");
   useEffect(() => {
@@ -70,7 +71,6 @@ function MapView() {
         center = center.toJSON();
         circle.setMap(mapRef.current);
         // service = new google.maps.places.PlacesService(mapRef.current);
-        const s = [];
         await fetch(`/api/yelp/${center.lat}/${center.lng}`)
           .then((res) => res.json())
           .then((business) => {
@@ -85,17 +85,10 @@ function MapView() {
                     status === google.maps.places.PlacesServiceStatus.OK &&
                     results
                   ) {
-                    // console.log({ ...item, placeId: results[0].place_id });
                     setSpots((prev) => [
                       ...prev,
                       { ...item, placeId: results[0].place_id },
                     ]);
-                    // s.push({ ...item, placeId: results[0].place_id });
-                    // if (s.length >= 3) {
-                    //   setSpots(s);
-                    // }
-                    // s.push({ ...item, placeId: results[0].place_id });
-                    // spots.push({ ...item, placeId: results[0].place_id });
                   }
                 });
               });

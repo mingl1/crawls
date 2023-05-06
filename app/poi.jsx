@@ -8,7 +8,9 @@ export default function Poi({
   selectDestination,
   show,
   commited,
+  setVis,
 }) {
+  setVis(false);
   return (
     <div
       className={`flex lg:p-5 ${!commited ? "cursor-pointer" : ""} md:p-5 ${

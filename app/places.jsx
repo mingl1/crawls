@@ -14,6 +14,9 @@ import { BrowserView, MobileView } from "react-device-detect";
 import "react-spring-bottom-sheet/dist/style.css";
 import Bottom from "./bottom";
 import Poi from "./poi";
+import SkeletonCard from "./SkeletonCard";
+// import Skeleton from "react-loading-skeleton";
+// import "react-loading-skeleton/dist/skeleton.css";
 const Places = memo(function Places({
   setOrigin,
   spots,
@@ -99,18 +102,24 @@ const Places = memo(function Places({
                   </button>
                 </div>
               )}
-              {spots?.map((loc, index) => (
-                <Poi
-                  loc={loc}
-                  index={index}
-                  details={details}
-                  spots={spots}
-                  selectDestination={selectDestination}
-                  show={show}
-                  commited={commited}
-                  key={index + 10}
-                />
-              ))}
+
+              {spots ? (
+                spots.map((loc, index) => (
+                  <Poi
+                    loc={loc}
+                    index={index}
+                    details={details}
+                    spots={spots}
+                    selectDestination={selectDestination}
+                    show={show}
+                    commited={commited}
+                    key={index + 10}
+                    setVis={setVis}
+                  />
+                ))
+              ) : (
+                <SkeletonCard />
+              )}
             </div>
           ) : null}
         </BrowserView>
