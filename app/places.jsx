@@ -114,7 +114,6 @@ const Places = memo(function Places({
                     show={show}
                     commited={commited}
                     key={index + 10}
-                    setVis={setVis}
                   />
                 ))
               ) : (
